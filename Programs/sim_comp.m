@@ -3,19 +3,19 @@
 %% Low Pass Filter vs Experimental Data
 %% Date: 11/6/2024
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-close all;
-clear;clc;
-T = readtable('NewFile1.csv', ReadRowNames=true);
-varNames = readtable('NewFile1.csv', Range= "A1:E2");
+close all; clear; clc;
+filepath = "RIGOL_CAP_DAT/";
+T = readtable(filepath + "cap40.csv", ReadRowNames=true);
+varNames = readtable(filepath + "cap40.csv", Range= "A1:E2");
 Tstart = varNames.Start;
 Tstep = varNames.Increment;
 numPoints = size(T, 1);
 
 % parameters
-RS = 17.82;
+RS = 19.82;
 RL = 160.4;
-ESR = 16.31861792; %ohms
-CL = 8.97 * 10^-8; %change to measured capacitancee
+ESR = 18.2774140152520; %ohms
+CL = 8.43828748609349e-08; %change to measured capacitancee
 frequency  = 10*10^3;     % frequency
 Vdc = 3;
 Vp = 2;
@@ -48,8 +48,10 @@ u = @(t) sin(t * 2 * pi * frequency + PhDiff) * Vp + Vdc;
 figure;
 plot(t,y, 'LineWidth', 4); hold on;
 plot(t,T.Var2);
-legend('Simulation voltage (v_s)','Experimental voltage (v_e)');
-title('Numerical simulation of a series RC circuit vs experimental values')
-xlabel('Time');
+legend('Simulation voltage (v_s)','Experimental voltage (v_e)', 'FontSize', 26);
+title('Numerical Simulation of a Series RC Circuit vs Experimental Values', 'FontSize', 36);
+xlabel('Time (s)', 'FontSize', 26);
+ylabel('Voltage (V)', 'FontSize', 26);
+
 
 RMSE = sqrt(mean((T.Var2 - y).^2)) % Root Mean Squared Error
